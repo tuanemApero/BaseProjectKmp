@@ -1,16 +1,12 @@
 package com.apero.kmpdemo.di
-import app.cash.sqldelight.db.SqlDriver
-import app.cash.sqldelight.driver.android.AndroidSqliteDriver
-import com.apero.kmpdemo.data.local.model.AppDatabase
-import org.koin.android.ext.koin.androidContext
+import com.apero.kmpdemo.data.local.database.AppDatabase
+import com.apero.kmpdemo.data.local.database.getAppDatabase
+import com.apero.kmpdemo.data.local.getDatabaseBuilder
 import org.koin.dsl.module
 
 actual fun platformModule() = module {
-    single<SqlDriver> {
-        AndroidSqliteDriver(
-            schema = AppDatabase.Schema,
-            context = androidContext(),
-            name = "app.db"
-        )
+    single<AppDatabase> {
+        val builder = getDatabaseBuilder(context = get())
+        getAppDatabase(builder)
     }
-} 
+}

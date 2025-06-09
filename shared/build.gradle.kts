@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.sqldelight)
+    alias(libs.plugins.room)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -50,6 +52,23 @@ kotlin {
                 implementation(libs.stately.common)
                 implementation(libs.stately.concurrent)
                 implementation(libs.stately.isolate)
+
+                /*data store*/
+                implementation(libs.datastore)
+                implementation(libs.datastore.preferences)
+
+                /*firebase*/
+                implementation(libs.firebase.config)
+                implementation(libs.firebase.analytic)
+
+                /*room*/
+                implementation(libs.room.runtime)
+                implementation(libs.sqlite.bundled)
+
+                implementation(projects.aiservicekmp)
+
+                implementation(libs.ktor.serialization.kotlinx.json)
+                implementation(libs.kotlinx.serialization.json)
             }
         }
         val androidMain by getting {
@@ -79,6 +98,9 @@ kotlin {
     }
 }
 
+room {
+    schemaDirectory("$projectDir/schemas")
+}
 android {
     namespace = "com.apero.kmpdemo"
     compileSdk = 35
@@ -89,6 +111,23 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
+}
+
+dependencies {
+    with(libs.kotlinInjectKsp) {
+        add("kspAndroid", this)
+        add("kspIosX64", this)
+        add("kspIosArm64", this)
+        add("kspIosSimulatorArm64", this)
+    }
+    with(libs.room.compiler) {
+        add("kspAndroid", this)
+        add("kspIosX64", this)
+        add("kspIosArm64", this)
+        add("kspIosSimulatorArm64", this)
+    }
+
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
 
 sqldelight {

@@ -17,27 +17,17 @@ kotlin {
         }
     }
 
-    val xcfName = "composeApp"
-
-    iosX64 {
-        binaries.framework {
-            baseName = xcfName
-            freeCompilerArgs += listOf("-Xbinary=bundleId=com.apero.composeapp")
-            linkerOpts("-lsqlite3")
-        }
-    }
-    iosArm64 {
-        binaries.framework {
-            baseName = xcfName
-            freeCompilerArgs += listOf("-Xbinary=bundleId=com.apero.composeapp")
-            linkerOpts("-lsqlite3")
-        }
-    }
-    iosSimulatorArm64 {
-        binaries.framework {
-            baseName = xcfName
-            freeCompilerArgs += listOf("-Xbinary=bundleId=com.apero.composeapp")
-            linkerOpts("-lsqlite3")
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "composeApp"
+            isStatic = true
+            linkerOpts.add("-framework")
+            linkerOpts.add("MessageUI")
+            linkerOpts.add("lsqlite3")
         }
     }
 
@@ -50,6 +40,9 @@ kotlin {
 
                 // Koin
                 implementation(libs.koin.core)
+                implementation(libs.koin.compose)
+                implementation(libs.koin.viewmodel)
+                implementation(libs.koin.compose.viewmodel.navigation)
 
                 //Compose
                 implementation(compose.runtime)
@@ -57,10 +50,33 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
 
-                implementation(libs.androidx.lifecycle.viewmodel.compose)
+                /*view_model*/
+                implementation(libs.androidx.lifecycle.viewmodel)
+                implementation(libs.androidx.lifecycle.runtime)
+
+                /*navigation*/
+                implementation(libs.androidx.navigation.compose)
+
+                /*serlization*/
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.kotlinInject)
+
                 implementation(libs.landscapist.coil)
-                implementation(project(":shared"))
+
+                /*back handler*/
+                implementation(libs.back.handler)
+
+                /*shimmer*/
+                implementation(libs.compose.shimmer)
+
+                /*muti module*/
+                implementation(projects.shared)
+
+                /*firebase*/
+                implementation(libs.firebase.config)
+                implementation(libs.firebase.analytic)
             }
         }
 
@@ -98,8 +114,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.10"
     }
-    namespace = "com.apero.composeapp"
-    
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -107,7 +121,7 @@ android {
 }
 
 val iosTargets = listOf(
-//    kotlin.targets.getByName("iosX64") as KotlinNativeTarget,
+    kotlin.targets.getByName("iosX64") as KotlinNativeTarget,
     kotlin.targets.getByName("iosArm64") as KotlinNativeTarget,
     kotlin.targets.getByName("iosSimulatorArm64") as KotlinNativeTarget
 )

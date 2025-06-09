@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "82829237484",
+    "project_id": "aip555-reelme-ai",
+    "storage_bucket": "aip555-reelme-ai.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:82829237484:android:9e04981a55865656c399c9",
+        "android_client_info": {
+          "package_name": "reelme.ai.video.generator.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlcmLns5xi42csV-QUuNSLLqsftk4wh40"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
