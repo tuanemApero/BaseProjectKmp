@@ -3,13 +3,14 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.jetbrains.kotlin.compose)
     alias(libs.plugins.jetbrains.compose)
+    alias(libs.plugins.google.service)
 }
 
 android {
     namespace = "com.apero.kmpdemo.android"
     compileSdk = 35
     defaultConfig {
-        applicationId = "com.apero.kmpdemo.android"
+        applicationId = "reelme.ai.video.generator.com"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -34,6 +35,8 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "17"
@@ -53,4 +56,9 @@ dependencies {
     implementation(libs.stately.concurrent)
     implementation(libs.stately.isolate)
     debugImplementation(libs.compose.ui.tooling)
+
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    implementation(libs.firebase.config)
+    implementation(libs.firebase.analytic)
 }
